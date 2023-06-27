@@ -10,6 +10,7 @@ Before beginning, the following requirements should be met:
 
 * The latest LTS version of [Node.js](https://nodejs.org/en/) should be installed
 * A Windows/Linux/Mac machine is required
+* [Truffle](https://trufflesuite.com/docs/truffle/how-to/install/) should be installed following the instructions provided in the link
 * [Ganache](https://www.trufflesuite.com/ganache) should be installed for local development and configured on port 7545 and network ID 1337
 
 ## Installing EDP-HIERARCHICAL-NFT
