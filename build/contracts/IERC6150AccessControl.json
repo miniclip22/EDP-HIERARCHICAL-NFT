@@ -1,0 +1,1078 @@
+{
+  "contractName": "IERC6150AccessControl",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "approved",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "approved",
+          "type": "bool"
+        }
+      ],
+      "name": "ApprovalForAll",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "minter",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "parentId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Minted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "childrenOf",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "childrenIds",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getApproved",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        }
+      ],
+      "name": "isApprovedForAll",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isLeaf",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isRoot",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerOf",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "parentOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "parentId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "safeTransferFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "safeTransferFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "approved",
+          "type": "bool"
+        }
+      ],
+      "name": "setApprovalForAll",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "interfaceId",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "isAdminOf",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "parentId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "canMintChildren",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "canBurnTokenByAccount",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"approved\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"ApprovalForAll\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"minter\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"parentId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Minted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"canBurnTokenByAccount\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"parentId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"canMintChildren\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"childrenOf\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"childrenIds\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"isAdminOf\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"isApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"isLeaf\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"isRoot\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"parentOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"parentId\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"safeTransferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"approved\",\"type\":\"bool\"}],\"name\":\"setApprovalForAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"See https://eips.ethereum.org/EIPS/eip-6150 Note: the ERC-165 identifier for this interface is 0x1d04f0b3.\",\"events\":{\"Approval(address,address,uint256)\":{\"details\":\"Emitted when `owner` enables `approved` to manage the `tokenId` token.\"},\"ApprovalForAll(address,address,bool)\":{\"details\":\"Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.\"},\"Minted(address,address,uint256,uint256)\":{\"params\":{\"minter\":\"The address of minter\",\"parentId\":\"The id of parent token, if it's zero, it means minted `tokenId` is a root token.\",\"to\":\"The address received token\",\"tokenId\":\"The id of minted token, required to be greater than zero\"}},\"Transfer(address,address,uint256)\":{\"details\":\"Emitted when `tokenId` token is transferred from `from` to `to`.\"}},\"kind\":\"dev\",\"methods\":{\"approve(address,uint256)\":{\"details\":\"Gives permission to `to` to transfer `tokenId` token to another account. The approval is cleared when the token is transferred. Only a single account can be approved at a time, so approving the zero address clears previous approvals. Requirements: - The caller must own the token or be an approved operator. - `tokenId` must exist. Emits an {Approval} event.\"},\"balanceOf(address)\":{\"details\":\"Returns the number of tokens in ``owner``'s account.\"},\"canBurnTokenByAccount(uint256,address)\":{\"params\":{\"account\":\"The specified account to be checked\",\"tokenId\":\"The specified token to be checked\"},\"returns\":{\"_0\":\"If the tokenId can be burnt by account, return true; otherwise, return false.\"}},\"canMintChildren(uint256,address)\":{\"details\":\"If the `parentId` is zero, check whether account can mint root nodes\",\"params\":{\"account\":\"The specified account to be checked\",\"parentId\":\"The specified parent token to be checked\"},\"returns\":{\"_0\":\"If the token and account has mint permission, return true; otherwise, return false.\"}},\"childrenOf(uint256)\":{\"params\":{\"tokenId\":\"The parent token\"},\"returns\":{\"childrenIds\":\"The array of children tokens\"}},\"getApproved(uint256)\":{\"details\":\"Returns the account approved for `tokenId` token. Requirements: - `tokenId` must exist.\"},\"isAdminOf(uint256,address)\":{\"details\":\"Each token can be set more than one admin. Admin have permission to do something to the token, like mint child token, or burn token, or transfer parentship.\",\"params\":{\"account\":\"The account to be checked\",\"tokenId\":\"The specified token\"},\"returns\":{\"_0\":\"If the account has admin permission, return true; otherwise, return false.\"}},\"isApprovedForAll(address,address)\":{\"details\":\"Returns if the `operator` is allowed to manage all of the assets of `owner`. See {setApprovalForAll}\"},\"isLeaf(uint256)\":{\"params\":{\"tokenId\":\"The token want to be checked\"},\"returns\":{\"_0\":\"Return `true` if it is a leaf token; if not, return `false`\"}},\"isRoot(uint256)\":{\"params\":{\"tokenId\":\"The token want to be checked\"},\"returns\":{\"_0\":\"Return `true` if it is a root token; if not, return `false`\"}},\"ownerOf(uint256)\":{\"details\":\"Returns the owner of the `tokenId` token. Requirements: - `tokenId` must exist.\"},\"parentOf(uint256)\":{\"params\":{\"tokenId\":\"The child token\"},\"returns\":{\"parentId\":\"The Parent token found\"}},\"safeTransferFrom(address,address,uint256)\":{\"details\":\"Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients are aware of the ERC721 protocol to prevent tokens from being forever locked. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must exist and be owned by `from`. - If the caller is not `from`, it must have been allowed to move this token by either {approve} or {setApprovalForAll}. - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. Emits a {Transfer} event.\"},\"safeTransferFrom(address,address,uint256,bytes)\":{\"details\":\"Safely transfers `tokenId` token from `from` to `to`. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must exist and be owned by `from`. - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}. - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. Emits a {Transfer} event.\"},\"setApprovalForAll(address,bool)\":{\"details\":\"Approve or remove `operator` as an operator for the caller. Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller. Requirements: - The `operator` cannot be the caller. Emits an {ApprovalForAll} event.\"},\"supportsInterface(bytes4)\":{\"details\":\"Returns true if this contract implements the interface defined by `interfaceId`. See the corresponding https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section] to learn more about how these ids are created. This function call must use less than 30 000 gas.\"},\"transferFrom(address,address,uint256)\":{\"details\":\"Transfers `tokenId` token from `from` to `to`. WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving ERC721 or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must understand this adds an external call which potentially creates a reentrancy vulnerability. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must be owned by `from`. - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}. Emits a {Transfer} event.\"}},\"title\":\"ERC-6150 Hierarchical NFTs Token Standard, optional extension for access control\",\"version\":1},\"userdoc\":{\"events\":{\"Minted(address,address,uint256,uint256)\":{\"notice\":\"Emitted when `tokenId` token under `parentId` is minted.\"}},\"kind\":\"user\",\"methods\":{\"canBurnTokenByAccount(uint256,address)\":{\"notice\":\"Check whether the specified token can be burnt by specified account\"},\"canMintChildren(uint256,address)\":{\"notice\":\"Check whether the specified parent token and account can mint children tokens\"},\"childrenOf(uint256)\":{\"notice\":\"Get the children tokens of `tokenId` token.\"},\"isAdminOf(uint256,address)\":{\"notice\":\"Check the account whether a admin of `tokenId` token.\"},\"isLeaf(uint256)\":{\"notice\":\"Check the `tokenId` token if it is a leaf token.\"},\"isRoot(uint256)\":{\"notice\":\"Check the `tokenId` token if it is a root token.\"},\"parentOf(uint256)\":{\"notice\":\"Get the parent token of `tokenId` token.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IERC6150AccessControl.sol\":\"IERC6150AccessControl\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/token/ERC721/IERC721.sol\":{\"keccak256\":\"0x5bce51e11f7d194b79ea59fe00c9e8de9fa2c5530124960f29a24d4c740a3266\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7e66dfde185df46104c11bc89d08fa0760737aa59a2b8546a656473d810a8ea4\",\"dweb:/ipfs/QmXvyqtXPaPss2PD7eqPoSao5Szm2n6UMoiG8TZZDjmChR\"]},\"@openzeppelin/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f\",\"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy\"]},\"project:/contracts/interfaces/IERC6150.sol\":{\"keccak256\":\"0x375e8d2b54eac42f7a759b16c2027e7aaca8d411d4b1dae24e740342add427db\",\"license\":\"CC0-1.0\",\"urls\":[\"bzz-raw://2587ed5a05e54b63ec7e4912cf05e1c4dc5944603ad1a2ddda7b5412a8ec0d74\",\"dweb:/ipfs/QmUAubuTRa2e5rzX11h7ZB1qTmsYnbtTjaCbSNXz6zQZeg\"]},\"project:/contracts/interfaces/IERC6150AccessControl.sol\":{\"keccak256\":\"0x045ccc80612fb7720bf9ebf9276b0adcf0841dd5f8f7bc8986608b33dd792103\",\"license\":\"CC0-1.0\",\"urls\":[\"bzz-raw://e2056c21e9a0c1409608a255d26800fe2aa19a88b78ee16af734002fccf68d0f\",\"dweb:/ipfs/QmTsfxwM7bAD8esgAKNMnD8B94qPG7FpQGAhU8JdsJXDkV\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: CC0-1.0\npragma solidity ^0.8.0;\n\nimport \"./IERC6150.sol\";\n\n/**\n * @title ERC-6150 Hierarchical NFTs Token Standard, optional extension for access control\n * @dev See https://eips.ethereum.org/EIPS/eip-6150\n * Note: the ERC-165 identifier for this interface is 0x1d04f0b3.\n */\ninterface IERC6150AccessControl is IERC6150 {\n    /**\n     * @notice Check the account whether a admin of `tokenId` token.\n     * @dev Each token can be set more than one admin. Admin have permission to do something to the token, like mint child token,\n     * or burn token, or transfer parentship.\n     * @param tokenId The specified token\n     * @param account The account to be checked\n     * @return If the account has admin permission, return true; otherwise, return false.\n     */\n    function isAdminOf(\n        uint256 tokenId,\n        address account\n    ) external view returns (bool);\n\n    /**\n     * @notice Check whether the specified parent token and account can mint children tokens\n     * @dev If the `parentId` is zero, check whether account can mint root nodes\n     * @param parentId The specified parent token to be checked\n     * @param account The specified account to be checked\n     * @return If the token and account has mint permission, return true; otherwise, return false.\n     */\n    function canMintChildren(\n        uint256 parentId,\n        address account\n    ) external view returns (bool);\n\n    /**\n     * @notice Check whether the specified token can be burnt by specified account\n     * @param tokenId The specified token to be checked\n     * @param account The specified account to be checked\n     * @return If the tokenId can be burnt by account, return true; otherwise, return false.\n     */\n    function canBurnTokenByAccount(\n        uint256 tokenId,\n        address account\n    ) external view returns (bool);\n}\n",
+  "sourcePath": "/Users/miniclip22/Documents/Cycloid/EDP/truffle-nft-hierarchy-poc working latest backup abstract/contracts/interfaces/IERC6150AccessControl.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IERC6150AccessControl.sol",
+    "exportedSymbols": {
+      "IERC165": [
+        2202
+      ],
+      "IERC6150": [
+        4336
+      ],
+      "IERC6150AccessControl": [
+        4373
+      ],
+      "IERC721": [
+        1155
+      ]
+    },
+    "id": 4374,
+    "license": "CC0-1.0",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4338,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "36:23:21"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces/IERC6150.sol",
+        "file": "./IERC6150.sol",
+        "id": 4339,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 4374,
+        "sourceUnit": 4337,
+        "src": "61:24:21",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 4341,
+              "name": "IERC6150",
+              "nameLocations": [
+                "339:8:21"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 4336,
+              "src": "339:8:21"
+            },
+            "id": 4342,
+            "nodeType": "InheritanceSpecifier",
+            "src": "339:8:21"
+          }
+        ],
+        "canonicalName": "IERC6150AccessControl",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 4340,
+          "nodeType": "StructuredDocumentation",
+          "src": "87:216:21",
+          "text": " @title ERC-6150 Hierarchical NFTs Token Standard, optional extension for access control\n @dev See https://eips.ethereum.org/EIPS/eip-6150\n Note: the ERC-165 identifier for this interface is 0x1d04f0b3."
+        },
+        "fullyImplemented": false,
+        "id": 4373,
+        "linearizedBaseContracts": [
+          4373,
+          4336,
+          1155,
+          2202
+        ],
+        "name": "IERC6150AccessControl",
+        "nameLocation": "314:21:21",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 4343,
+              "nodeType": "StructuredDocumentation",
+              "src": "354:436:21",
+              "text": " @notice Check the account whether a admin of `tokenId` token.\n @dev Each token can be set more than one admin. Admin have permission to do something to the token, like mint child token,\n or burn token, or transfer parentship.\n @param tokenId The specified token\n @param account The account to be checked\n @return If the account has admin permission, return true; otherwise, return false."
+            },
+            "functionSelector": "bdbae191",
+            "id": 4352,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isAdminOf",
+            "nameLocation": "804:9:21",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4348,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4345,
+                  "mutability": "mutable",
+                  "name": "tokenId",
+                  "nameLocation": "831:7:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4352,
+                  "src": "823:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4344,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "823:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4347,
+                  "mutability": "mutable",
+                  "name": "account",
+                  "nameLocation": "856:7:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4352,
+                  "src": "848:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4346,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "848:7:21",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "813:56:21"
+            },
+            "returnParameters": {
+              "id": 4351,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4350,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4352,
+                  "src": "893:4:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4349,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "893:4:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "892:6:21"
+            },
+            "scope": 4373,
+            "src": "795:104:21",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 4353,
+              "nodeType": "StructuredDocumentation",
+              "src": "905:406:21",
+              "text": " @notice Check whether the specified parent token and account can mint children tokens\n @dev If the `parentId` is zero, check whether account can mint root nodes\n @param parentId The specified parent token to be checked\n @param account The specified account to be checked\n @return If the token and account has mint permission, return true; otherwise, return false."
+            },
+            "functionSelector": "5f57bbed",
+            "id": 4362,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "canMintChildren",
+            "nameLocation": "1325:15:21",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4358,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4355,
+                  "mutability": "mutable",
+                  "name": "parentId",
+                  "nameLocation": "1358:8:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4362,
+                  "src": "1350:16:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4354,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1350:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4357,
+                  "mutability": "mutable",
+                  "name": "account",
+                  "nameLocation": "1384:7:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4362,
+                  "src": "1376:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4356,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1376:7:21",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1340:57:21"
+            },
+            "returnParameters": {
+              "id": 4361,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4360,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4362,
+                  "src": "1421:4:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4359,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1421:4:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1420:6:21"
+            },
+            "scope": 4373,
+            "src": "1316:111:21",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 4363,
+              "nodeType": "StructuredDocumentation",
+              "src": "1433:301:21",
+              "text": " @notice Check whether the specified token can be burnt by specified account\n @param tokenId The specified token to be checked\n @param account The specified account to be checked\n @return If the tokenId can be burnt by account, return true; otherwise, return false."
+            },
+            "functionSelector": "ffe9aacf",
+            "id": 4372,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "canBurnTokenByAccount",
+            "nameLocation": "1748:21:21",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4368,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4365,
+                  "mutability": "mutable",
+                  "name": "tokenId",
+                  "nameLocation": "1787:7:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4372,
+                  "src": "1779:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4364,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1779:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4367,
+                  "mutability": "mutable",
+                  "name": "account",
+                  "nameLocation": "1812:7:21",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4372,
+                  "src": "1804:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4366,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1804:7:21",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1769:56:21"
+            },
+            "returnParameters": {
+              "id": 4371,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4370,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4372,
+                  "src": "1849:4:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 4369,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1849:4:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1848:6:21"
+            },
+            "scope": 4373,
+            "src": "1739:116:21",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4374,
+        "src": "304:1553:21",
+        "usedErrors": []
+      }
+    ],
+    "src": "36:1822:21"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.19+commit.7dd6d404.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-06-24T17:10:58.864Z",
+  "devdoc": {
+    "details": "See https://eips.ethereum.org/EIPS/eip-6150 Note: the ERC-165 identifier for this interface is 0x1d04f0b3.",
+    "events": {
+      "Approval(address,address,uint256)": {
+        "details": "Emitted when `owner` enables `approved` to manage the `tokenId` token."
+      },
+      "ApprovalForAll(address,address,bool)": {
+        "details": "Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets."
+      },
+      "Minted(address,address,uint256,uint256)": {
+        "params": {
+          "minter": "The address of minter",
+          "parentId": "The id of parent token, if it's zero, it means minted `tokenId` is a root token.",
+          "to": "The address received token",
+          "tokenId": "The id of minted token, required to be greater than zero"
+        }
+      },
+      "Transfer(address,address,uint256)": {
+        "details": "Emitted when `tokenId` token is transferred from `from` to `to`."
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "approve(address,uint256)": {
+        "details": "Gives permission to `to` to transfer `tokenId` token to another account. The approval is cleared when the token is transferred. Only a single account can be approved at a time, so approving the zero address clears previous approvals. Requirements: - The caller must own the token or be an approved operator. - `tokenId` must exist. Emits an {Approval} event."
+      },
+      "balanceOf(address)": {
+        "details": "Returns the number of tokens in ``owner``'s account."
+      },
+      "canBurnTokenByAccount(uint256,address)": {
+        "params": {
+          "account": "The specified account to be checked",
+          "tokenId": "The specified token to be checked"
+        },
+        "returns": {
+          "_0": "If the tokenId can be burnt by account, return true; otherwise, return false."
+        }
+      },
+      "canMintChildren(uint256,address)": {
+        "details": "If the `parentId` is zero, check whether account can mint root nodes",
+        "params": {
+          "account": "The specified account to be checked",
+          "parentId": "The specified parent token to be checked"
+        },
+        "returns": {
+          "_0": "If the token and account has mint permission, return true; otherwise, return false."
+        }
+      },
+      "childrenOf(uint256)": {
+        "params": {
+          "tokenId": "The parent token"
+        },
+        "returns": {
+          "childrenIds": "The array of children tokens"
+        }
+      },
+      "getApproved(uint256)": {
+        "details": "Returns the account approved for `tokenId` token. Requirements: - `tokenId` must exist."
+      },
+      "isAdminOf(uint256,address)": {
+        "details": "Each token can be set more than one admin. Admin have permission to do something to the token, like mint child token, or burn token, or transfer parentship.",
+        "params": {
+          "account": "The account to be checked",
+          "tokenId": "The specified token"
+        },
+        "returns": {
+          "_0": "If the account has admin permission, return true; otherwise, return false."
+        }
+      },
+      "isApprovedForAll(address,address)": {
+        "details": "Returns if the `operator` is allowed to manage all of the assets of `owner`. See {setApprovalForAll}"
+      },
+      "isLeaf(uint256)": {
+        "params": {
+          "tokenId": "The token want to be checked"
+        },
+        "returns": {
+          "_0": "Return `true` if it is a leaf token; if not, return `false`"
+        }
+      },
+      "isRoot(uint256)": {
+        "params": {
+          "tokenId": "The token want to be checked"
+        },
+        "returns": {
+          "_0": "Return `true` if it is a root token; if not, return `false`"
+        }
+      },
+      "ownerOf(uint256)": {
+        "details": "Returns the owner of the `tokenId` token. Requirements: - `tokenId` must exist."
+      },
+      "parentOf(uint256)": {
+        "params": {
+          "tokenId": "The child token"
+        },
+        "returns": {
+          "parentId": "The Parent token found"
+        }
+      },
+      "safeTransferFrom(address,address,uint256)": {
+        "details": "Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients are aware of the ERC721 protocol to prevent tokens from being forever locked. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must exist and be owned by `from`. - If the caller is not `from`, it must have been allowed to move this token by either {approve} or {setApprovalForAll}. - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. Emits a {Transfer} event."
+      },
+      "safeTransferFrom(address,address,uint256,bytes)": {
+        "details": "Safely transfers `tokenId` token from `from` to `to`. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must exist and be owned by `from`. - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}. - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. Emits a {Transfer} event."
+      },
+      "setApprovalForAll(address,bool)": {
+        "details": "Approve or remove `operator` as an operator for the caller. Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller. Requirements: - The `operator` cannot be the caller. Emits an {ApprovalForAll} event."
+      },
+      "supportsInterface(bytes4)": {
+        "details": "Returns true if this contract implements the interface defined by `interfaceId`. See the corresponding https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section] to learn more about how these ids are created. This function call must use less than 30 000 gas."
+      },
+      "transferFrom(address,address,uint256)": {
+        "details": "Transfers `tokenId` token from `from` to `to`. WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving ERC721 or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must understand this adds an external call which potentially creates a reentrancy vulnerability. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must be owned by `from`. - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}. Emits a {Transfer} event."
+      }
+    },
+    "title": "ERC-6150 Hierarchical NFTs Token Standard, optional extension for access control",
+    "version": 1
+  },
+  "userdoc": {
+    "events": {
+      "Minted(address,address,uint256,uint256)": {
+        "notice": "Emitted when `tokenId` token under `parentId` is minted."
+      }
+    },
+    "kind": "user",
+    "methods": {
+      "canBurnTokenByAccount(uint256,address)": {
+        "notice": "Check whether the specified token can be burnt by specified account"
+      },
+      "canMintChildren(uint256,address)": {
+        "notice": "Check whether the specified parent token and account can mint children tokens"
+      },
+      "childrenOf(uint256)": {
+        "notice": "Get the children tokens of `tokenId` token."
+      },
+      "isAdminOf(uint256,address)": {
+        "notice": "Check the account whether a admin of `tokenId` token."
+      },
+      "isLeaf(uint256)": {
+        "notice": "Check the `tokenId` token if it is a leaf token."
+      },
+      "isRoot(uint256)": {
+        "notice": "Check the `tokenId` token if it is a root token."
+      },
+      "parentOf(uint256)": {
+        "notice": "Get the parent token of `tokenId` token."
+      }
+    },
+    "version": 1
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "truffle-nft-hierarchy-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Duarte Teles",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.2",
+    "bn.js": "^5.2.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "openzeppelin-solidity": "^3.4.2"
+  },
+  "devDependencies": {
+    "chai-bignumber": "^3.1.0",
+    "chai-bn": "^0.3.1"
+  }
+}
