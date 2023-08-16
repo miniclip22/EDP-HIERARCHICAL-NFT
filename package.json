@@ -15,11 +15,11 @@
     "@openzeppelin/contracts": "^4.9.2",
     "bn.js": "^5.2.1",
     "chai": "^4.3.7",
+    "chai-bn": "^0.3.1",
     "mocha": "^10.2.0",
     "openzeppelin-solidity": "^3.4.2"
   },
   "devDependencies": {
-    "chai-bignumber": "^3.1.0",
-    "chai-bn": "^0.3.1"
+    "chai-bignumber": "^3.1.0"
   }
 }
