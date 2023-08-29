@@ -1,176 +1,195 @@
-// SPDX-License-Identifier: CC0-1.0
 pragma solidity ^0.8.0;
 
-import "./interfaces/IERC6150.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyNFTContract is IERC6150 {
-    struct NFT {
+
+contract MyNFTContract is ERC721Enumerable, Ownable {
+    uint256 private constant MAX_PARENT_TOKENS = 2 ** 128;
+
+    event ChildTokenMinted(uint256 indexed tokenId, uint256 indexed parentId, string name, string description, string image, uint256 value, string location);
+
+    struct ParentToken {
         string name;
         string description;
         string image;
         uint256 value;
+        uint256[] childTokenIds;
+    }
+
+    struct ChildToken {
         uint256 parentId;
-        uint256[] childrenIds;
+        string name;
+        string description;
+        string image;
+        uint256 value;
+        string location;
     }
 
-    mapping(uint256 => NFT) private nfts;
-    mapping(uint256 => address) private tokenOwners;
-    mapping(uint256 => address) private tokenApprovals;
-    mapping(address => uint256[]) private ownedTokens;
-    mapping(address => mapping(address => bool)) private operatorApprovals;
+    mapping (uint256 => bool) private _parentTokenExists;
+    mapping (uint256 => mapping(uint256 => bool)) private _childTokenExists;
 
-    uint256 private nextTokenId;
+    mapping(bytes32 => bool) private _parentTokenPropertiesExist;
+    mapping(bytes32 => bool) private _childTokenPropertiesExist;
 
-    constructor() {
-        nextTokenId = 1;
-    }
 
-    function mint(
-        address to,
-        uint256 parentId,
+
+    ParentToken[] private parentTokens;
+    ChildToken[] private childTokens;
+
+    constructor() ERC721("MyNFTContract", "NFTC") {}
+
+    event ParentTokenMinted(uint256 indexed tokenId);
+
+    function mintParentToken(
         string memory name,
         string memory description,
         string memory image,
         uint256 value
-    ) external returns (uint256) {
-        uint256 tokenId = nextTokenId;
-        nextTokenId++;
+    ) public onlyOwner returns (uint256) {
+        require(parentTokens.length < MAX_PARENT_TOKENS, "Max number of parent tokens reached");
 
-        nfts[tokenId] = NFT({
-            name: name,
-            description: description,
-            image: image,
-            value: value,
-            parentId: parentId,
-            childrenIds: new uint256[](0)
-        });
+        bytes32 propertiesHash = keccak256(abi.encodePacked(name, description, image, value));
+        require(!_parentTokenPropertiesExist[propertiesHash], "Parent token with these properties already minted");
+        _parentTokenPropertiesExist[propertiesHash] = true;
 
-        tokenOwners[tokenId] = to;
-        ownedTokens[to].push(tokenId);
+        uint256 tokenId = parentTokens.length + 1;
+        _mint(msg.sender, tokenId << 128);
+        emit ParentTokenMinted(tokenId << 128);
 
-        if (parentId > 0) {
-            nfts[parentId].childrenIds.push(tokenId);
-        }
-
-        emit Minted(msg.sender, to, parentId, tokenId);
+        parentTokens.push(
+            ParentToken({
+                name: name,
+                description: description,
+                image: image,
+                value: value,
+                childTokenIds: new uint256[](0)
+            })
+        );
 
         return tokenId;
     }
 
-    function parentOf(uint256 tokenId) external view override returns (uint256) {
-        return nfts[tokenId].parentId;
+    function mintChildToken(
+        uint256 parentId,
+        string memory name,
+        string memory description,
+        string memory image,
+        uint256 value,
+        string memory location
+    ) public onlyOwner returns (uint256) {
+        require(parentId > 0 && parentId <= parentTokens.length, "Invalid parent token ID");
+
+        bytes32 propertiesHash = keccak256(abi.encodePacked(parentId, name, description, image, value, location));
+        require(!_childTokenPropertiesExist[propertiesHash], "Child token with these properties already minted under this parent");
+        _childTokenPropertiesExist[propertiesHash] = true;
+
+        ParentToken storage parent = parentTokens[parentId - 1];
+        uint256 childTokenId = parent.childTokenIds.length + 1;
+        uint256 tokenId = (parentId << 128) + childTokenId;
+
+        _mint(msg.sender, tokenId);
+        parent.childTokenIds.push(childTokenId);
+        childTokens.push(
+            ChildToken({
+                parentId: parentId,
+                name: name,
+                description: description,
+                image: image,
+                value: value,
+                location: location
+            })
+        );
+
+        emit ChildTokenMinted(childTokenId, parentId, name, description, image, value, location);
+        return childTokenId;
     }
 
-    function childrenOf(uint256 tokenId) external view override returns (uint256[] memory) {
-        return nfts[tokenId].childrenIds;
+    function getChildTokenId(uint256 parentId, uint256 index) public view returns (uint256) {
+        require(parentId > 0 && parentId <= parentTokens.length, "Invalid parent token ID");
+        ParentToken storage parent = parentTokens[parentId - 1];
+        require(index < parent.childTokenIds.length, "Invalid child token index");
+        return parent.childTokenIds[index];
     }
 
-    function isRoot(uint256 tokenId) external view override returns (bool) {
-        return nfts[tokenId].parentId == 0;
+    function getChildTokenData(uint256 _childTokenId) public view returns (ChildToken memory) {
+        require(_childTokenId > 0 && _childTokenId <= childTokens.length, "Invalid child token ID");
+        return childTokens[_childTokenId - 1];
     }
 
-    function isLeaf(uint256 tokenId) external view override returns (bool) {
-        return nfts[tokenId].childrenIds.length == 0;
+    function childrenOf(uint256 _parentId) public view returns (uint256[] memory) {
+        require(_parentId > 0 && _parentId <= parentTokens.length, "Invalid parent token ID");
+        return parentTokens[_parentId - 1].childTokenIds;
     }
 
-    function approve(address to, uint256 tokenId) external override {
-        require(to != address(0), "Approve to zero address");
-        require(msg.sender == tokenOwners[tokenId] || _isApprovedForAll(tokenOwners[tokenId], msg.sender), "Not authorized");
-
-        tokenApprovals[tokenId] = to;
+    function updateChildTokenProperties(
+        uint256 _childTokenId,
+        string memory _name,
+        string memory _description,
+        string memory _image,
+        uint256 _value,
+        string memory _location
+    ) public {
+        require(_childTokenId > 0 && _childTokenId <= childTokens.length, "Invalid child token ID");
+        ChildToken storage child = childTokens[_childTokenId - 1];
+        child.name = _name;
+        child.description = _description;
+        child.image = _image;
+        child.value = _value;
+        child.location = _location;
     }
 
-    function balanceOf(address owner) external view override returns (uint256 balance) {
-        return ownedTokens[owner].length;
+    function getParentTokenProperties(uint256 parentId)
+    public
+    view
+    returns (
+        string memory name,
+        string memory description,
+        string memory image,
+        uint256 value,
+        uint256[] memory childTokenIds
+    )
+    {
+        require(parentId > 0 && parentId <= parentTokens.length, "Invalid parent token ID");
+
+        ParentToken storage parent = parentTokens[parentId - 1];
+        return (
+            parent.name,
+            parent.description,
+            parent.image,
+            parent.value,
+            parent.childTokenIds
+        );
     }
 
-    function getApproved(uint256 tokenId) external view override returns (address operator) {
-        require(_exists(tokenId), "Token does not exist");
-        return tokenApprovals[tokenId];
+    function getMaxParentTokens() public pure virtual returns (uint256) {
+        return MAX_PARENT_TOKENS;
     }
 
-    function isApprovedForAll(address owner, address operator) external view override returns (bool) {
-        return operatorApprovals[owner][operator];
+    function mintParentToken(address to, uint256 tokenId) public {
+        require(!_parentTokenExists[tokenId], "ERC721: token already minted");
+        _parentTokenExists[tokenId] = true;
+        _mint(to, tokenId);
     }
 
-    function ownerOf(uint256 tokenId) external view override returns (address owner) {
-        require(_exists(tokenId), "Token does not exist");
-        return tokenOwners[tokenId];
+    function mintChildToken(address to, uint256 parentId, uint256 childId) public {
+        require(!_childTokenExists[parentId][childId], "Child token ID already exists for this parent");
+        _childTokenExists[parentId][childId] = true;
+        uint256 tokenId = parentId << 128 | childId;
+        _mint(to, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId) external override {
-        _transferFrom(from, to, tokenId);
-    }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external override {
-        _transferFrom(from, to, tokenId);
-    }
 
-    function setApprovalForAll(address operator, bool approved) external override {
-        operatorApprovals[msg.sender][operator] = approved;
-    }
 
-    function supportsInterface(bytes4 interfaceId) external view override returns (bool) {
-        return interfaceId == type(IERC6150).interfaceId;
-    }
 
-    function transferFrom(address from, address to, uint256 tokenId) external override {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Not authorized");
-        _transferFrom(from, to, tokenId);
-    }
 
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Not authorized");
-        require(from == _ownerOf(tokenId), "Not owner");
-        require(to != address(0), "Transfer to zero address");
 
-        // Transfer ownership and update balances
-        tokenOwners[tokenId] = to;
-        ownedTokens[to].push(tokenId);
-        ownedTokens[from] = _removeTokenFromOwner(from, tokenId);
 
-        // Reset approval
-        if (tokenApprovals[tokenId] != address(0)) {
-            tokenApprovals[tokenId] = address(0);
-        }
-    }
 
-    function _exists(uint256 tokenId) internal view returns (bool) {
-        return tokenOwners[tokenId] != address(0);
-    }
 
-    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool) {
-        require(_exists(tokenId), "Token does not exist");
-        return (spender == tokenOwners[tokenId] || _getApproved(tokenId) == spender || _isApprovedForAll(_ownerOf(tokenId), spender));
-    }
 
-    function _getApproved(uint256 tokenId) internal view returns (address) {
-        require(_exists(tokenId), "Token does not exist");
-        return tokenApprovals[tokenId];
-    }
 
-    function _ownerOf(uint256 tokenId) internal view returns (address) {
-        require(_exists(tokenId), "Token does not exist");
-        return tokenOwners[tokenId];
-    }
 
-    function _isApprovedForAll(address owner, address operator) internal view returns (bool) {
-        return operatorApprovals[owner][operator];
-    }
 
-    function _removeTokenFromOwner(address owner, uint256 tokenId) internal view returns (uint256[] memory) {
-        uint256[] memory tokens = ownedTokens[owner];
-        uint256[] memory newTokens = new uint256[](tokens.length - 1);
-
-        for (uint i = 0; i < tokens.length; i++) {
-            if (tokens[i] == tokenId) {
-                // If the token is found, skip it
-                continue;
-            }
-
-            newTokens[i] = tokens[i];
-        }
-
-        return newTokens;
-    }
 }
